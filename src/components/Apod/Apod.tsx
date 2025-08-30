@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getAstronomyPicture } from '../../services/nasaService';
 import { ApodContainer, ApodImage, ApodTitle, ApodExplanation, DatePickerContainer, CopyrightText } from './ApodStyles';
+import { Loader } from '../Loader/Loader';
 import type { ApodData } from '../../types/nasaTypes';
 import { motion } from 'framer-motion';
 
@@ -33,7 +34,7 @@ export const Apod = () => {
   };
 
   if (loading) {
-    return <p>Carregando a imagem do dia...</p>;
+    return <Loader />;
   }
 
   if (error) {
