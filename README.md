@@ -1,11 +1,4 @@
 Visão Cósmica Sonora
-<p align="center">
-<img src="https://www.google.com/search?q=https://img.shields.io/badge/Status-Em%2520Desenvolvimento-yellowgreen" alt="Status do Projeto">
-<img src="https://www.google.com/search?q=https://img.shields.io/badge/Front--end-React%2520%257C%2520TypeScript-blue" alt="Tecnologias Front-end">
-<img src="https://www.google.com/search?q=https://img.shields.io/badge/Estiliza%C3%A7%C3%A3o-Styled--Components-ff69b4" alt="Tecnologias de Estilização">
-<img src="https://www.google.com/search?q=https://img.shields.io/badge/Anima%C3%A7%C3%A3o-Framer%2520Motion-purple" alt="Tecnologias de Animação">
-<img src="https://www.google.com/search?q=https://img.shields.io/badge/API-NASA%2520%257C%2520Spotify-lightgray" alt="APIs Utilizadas">
-</p>
 
 📋 Sobre o Projeto
 O Visão Cósmica Sonora é um aplicativo web interativo que combina a beleza da astronomia com o mundo da música. Utilizando as APIs da NASA e do Spotify, a aplicação busca a "Astronomy Picture of the Day" (APOD) e, no futuro, irá sugerir uma trilha sonora que se harmonize com a imagem, criando uma experiência imersiva e visualmente deslumbrante.
