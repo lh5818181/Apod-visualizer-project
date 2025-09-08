@@ -175,3 +175,21 @@ export const ArtistName = styled.p`
     font-size: 0.8rem;
   }
 `;
+
+export const FavoritesButton = styled.button`
+  background-color: var(--accent-color);
+  color: var(--primary-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+
+  &:hover {
+    background-color: #5555c4;
+  }
+`;

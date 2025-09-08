@@ -14,7 +14,8 @@ import {  ApodContainer,
   AlbumArt,
   TrackInfo,
   TrackName,
-  ArtistName, } from './ApodStyles';
+  ArtistName,
+  FavoritesButton, } from './ApodStyles';
 import { Loader } from '../Loader/Loader';
 import type { ApodData } from '../../types/nasaTypes';
 import debounce from 'lodash.debounce';
@@ -57,6 +58,36 @@ export const Apod = () => {
   const [error, setError] = useState(false);
   const [date, setDate] = useState<string | null>(null);
   const [musicList, setMusicList] = useState<Track[] | null>(null);
+  const [favorites, setFavorites] = useState<ApodData[]>([]);
+
+  // Carregar favoritos do localStorage ao iniciar a aplicação
+useEffect(() => {
+  try {
+    const storedFavorites = localStorage.getItem('apodFavorites');
+    if (storedFavorites) {
+      setFavorites(JSON.parse(storedFavorites));
+    }
+  } catch (e) {
+    console.error("Erro ao carregar favoritos do localStorage", e);
+  }
+}, []);
+
+// Salvar favoritos no localStorage sempre que a lista for alterada
+useEffect(() => {
+  localStorage.setItem('apodFavorites', JSON.stringify(favorites));
+}, [favorites]);
+
+const handleToggleFavorite = () => {
+  if (!apodData) return;
+  const isFavorite = favorites.some(fav => fav.date === apodData.date);
+  if (isFavorite) {
+    // Remove da lista
+    setFavorites(favorites.filter(fav => fav.date !== apodData.date));
+  } else {
+    // Adiciona à lista
+    setFavorites([...favorites, apodData]);
+  }
+};
 
   useEffect(() => {
     const fetchApodAndMusic = async () => {
@@ -133,6 +164,11 @@ export const Apod = () => {
         transition={{ duration: 0.8 }}
       >
         <ApodTitle>{apodData?.title}</ApodTitle>
+          {apodData && (
+      <FavoritesButton onClick={handleToggleFavorite}>
+        {favorites.some(fav => fav.date === apodData.date) ? '★ Salvo' : '☆ Favoritar'}
+      </FavoritesButton>
+        )}
       </motion.div>
 
       {apodData?.media_type === 'image' ? (
