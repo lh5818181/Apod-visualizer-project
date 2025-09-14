@@ -193,3 +193,21 @@ export const FavoritesButton = styled.button`
     background-color: #5555c4;
   }
 `;
+
+export const ApodVideoWrapper = styled(motion.div)`
+  width: 100%;
+  padding-top: 56.25%; /* Proporção 16:9 (altura/largura) */
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+`;

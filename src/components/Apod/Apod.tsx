@@ -15,7 +15,8 @@ import {  ApodContainer,
   TrackInfo,
   TrackName,
   ArtistName,
-  FavoritesButton, } from './ApodStyles';
+  FavoritesButton,
+  ApodVideoWrapper, } from './ApodStyles';
 import { Loader } from '../Loader/Loader';
 import type { ApodData } from '../../types/nasaTypes';
 import debounce from 'lodash.debounce';
@@ -29,12 +30,6 @@ interface Track {
   external_urls: { spotify: string };
 }
 
-const getKeywords = (title: string): string => {
-  const words = title.split(' ');
-  // Filtra palavras menos relevantes e seleciona as mais importantes
-  const filteredWords = words.filter(word => !['a', 'an', 'the', 'in', 'of', 'and', 'for', 'with'].includes(word.toLowerCase()));
-  return filteredWords.join(' ');
-};
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -115,33 +110,33 @@ const handleToggleFavorite = () => {
   };
 
    // Usa o useCallback para memorizar a função de busca
-  const debouncedSearch = useCallback(
-    debounce(async (title: string) => {
-      const keywords = getKeywords(title);
-      const music = await searchMusic(keywords);
-      setMusicList(music);
-    }, 500),
-    []
-  );
+const debouncedSearch = useCallback(
+  debounce(async (query: string) => {
+    // Usa a URL completa como query
+    const music = await searchMusic(query);
+    setMusicList(music);
+  }, 500),
+  []
+);
 
-   useEffect(() => {
-    const fetchApodAndMusic = async () => {
-      setLoading(true);
-      setError(false);
-      try {
-        const apod = await getAstronomyPicture(date);
-        if (apod) {
-          setApodData(apod);
-          debouncedSearch(apod.title); // Usa a função de busca aprimorada
-        } else {
-          setError(true);
-        }
-      } finally {
-        setLoading(false);
+useEffect(() => {
+  const fetchApodAndMusic = async () => {
+    setLoading(true);
+    setError(false);
+    try {
+      const apod = await getAstronomyPicture(date);
+      if (apod) {
+        setApodData(apod);
+        debouncedSearch(apod.url);
+      } else {
+        setError(true);
       }
-    };
-    fetchApodAndMusic();
-  }, [date, debouncedSearch]);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchApodAndMusic();
+}, [date, debouncedSearch]);
 
 
   if (loading) {
@@ -164,18 +159,28 @@ const handleToggleFavorite = () => {
         transition={{ duration: 0.8 }}
       >
         <ApodTitle>{apodData?.title}</ApodTitle>
-          {apodData && (
+          {/* {apodData && ( //comentado para ocultar por enquanto
       <FavoritesButton onClick={handleToggleFavorite}>
         {favorites.some(fav => fav.date === apodData.date) ? '★ Salvo' : '☆ Favoritar'}
       </FavoritesButton>
-        )}
+        )} */}
       </motion.div>
 
-      {apodData?.media_type === 'image' ? (
-        <ApodImage src={apodData?.url} alt={apodData?.title} />
-      ) : (
-        <p>Conteúdo do dia não é uma imagem.</p>
-      )}
+      {apodData?.media_type === 'image' && (
+  <ApodImage src={apodData?.url} alt={apodData?.title} />
+)}
+
+{apodData?.media_type === 'video' && (
+  <ApodVideoWrapper>
+    <iframe
+      title={apodData?.title}
+      src={apodData?.url}
+      frameBorder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowFullScreen
+    />
+  </ApodVideoWrapper>
+)}
 
       <ApodExplanation>{apodData?.explanation}</ApodExplanation>
 
