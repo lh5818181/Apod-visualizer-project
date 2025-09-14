@@ -125,9 +125,9 @@ useEffect(() => {
     setError(false);
     try {
       const apod = await getAstronomyPicture(date);
-      if (apod) {
-        setApodData(apod);
-        debouncedSearch(apod.url);
+    if (apod && apod.url) { // Verifica se apod e apod.url não são null/undefined
+      debouncedSearch(apod.url);
+      
       } else {
         setError(true);
       }
@@ -159,11 +159,11 @@ useEffect(() => {
         transition={{ duration: 0.8 }}
       >
         <ApodTitle>{apodData?.title}</ApodTitle>
-          {/* {apodData && ( //comentado para ocultar por enquanto
+          {apodData && ( 
       <FavoritesButton onClick={handleToggleFavorite}>
         {favorites.some(fav => fav.date === apodData.date) ? '★ Salvo' : '☆ Favoritar'}
       </FavoritesButton>
-        )} */}
+        )}
       </motion.div>
 
       {apodData?.media_type === 'image' && (
