@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+// LÊ AS CHAVES DO ARQUIVO .env
 const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
+// CORREÇÃO: ENDPOINTS OFICIAIS DO SPOTIFY
 const TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token';
 const SEARCH_ENDPOINT = 'https://api.spotify.com/v1/search';
 
@@ -9,6 +11,13 @@ let accessToken: string | null = null;
 let tokenExpiry: number | null = null;
 
 const getAccessToken = async (): Promise<string | null> => {
+  // Adiciona uma verificação de segurança
+  if (!CLIENT_ID || !CLIENT_SECRET) {
+      console.warn("Aviso: Chaves do Spotify não configuradas. A busca por música não funcionará.");
+      return null;
+  }
+  
+  // (Resto da lógica de token existente)
   if (accessToken && tokenExpiry && Date.now() < tokenExpiry) {
     return accessToken;
   }
@@ -34,6 +43,7 @@ const getAccessToken = async (): Promise<string | null> => {
 };
 
 export const searchMusic = async (query: string) => {
+  // ... (Resto da sua função searchMusic)
   const token = await getAccessToken();
   if (!token) {
     return null;
