@@ -121,6 +121,7 @@ export const TrackList = styled(motion.ul)`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  
 `;
 
 export const TrackItem = styled(motion.li)`

@@ -51,7 +51,7 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, x: -20 },
+  hidden: { opacity: 1, x: -20 },
   visible: { opacity: 1, x: 0 },
 };
 
@@ -158,22 +158,26 @@ export const Apod = () => {
     );
   };
 
-  const renderTracks = () => (
+ const renderTracks = () => (
     <TrackList>
       {musicTracks.map((track) => (
-        <motion.li key={track.id} variants={itemVariants}>
-          <TrackItem onClick={() => window.open(track.external_urls.spotify, '_blank')}>
-            <AlbumArt 
-                src={track.album.images[0]?.url || 'https://placehold.co/60x60/334155/f1f5f9?text=Música'} 
-                alt={`Capa do Álbum ${track.name}`} 
-            />
-            <TrackInfo>
-              <TrackName>{track.name}</TrackName>
-              <ArtistName>{track.artists.map(a => a.name).join(', ')}</ArtistName>
-            </TrackInfo>
-            {/* Adicionar um ícone de link ou play aqui */}
-          </TrackItem>
-        </motion.li>
+        // CORREÇÃO AQUI: O TrackItem, que já é um styled(motion.li),
+        // DEVE receber as props key e variants para a animação.
+        <TrackItem 
+          key={track.id} 
+          variants={itemVariants} // <-- AGORA O ITEM RECEBE A VARIANTE
+          onClick={() => window.open(track.external_urls.spotify, '_blank')}
+        >
+          <AlbumArt 
+              src={track.album.images[0]?.url || 'https://placehold.co/60x60/334155/f1f5f9?text=Música'} 
+              alt={`Capa do Álbum ${track.name}`} 
+          />
+          <TrackInfo>
+            <TrackName>{track.name}</TrackName>
+            <ArtistName>{track.artists.map(a => a.name).join(', ')}</ArtistName>
+          </TrackInfo>
+          {/* Adicionar um ícone de link ou play aqui */}
+        </TrackItem>
       ))}
     </TrackList>
   );
