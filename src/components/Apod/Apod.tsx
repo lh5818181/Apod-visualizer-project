@@ -59,7 +59,12 @@ const itemVariants = {
 export const Apod = () => {
   // O estado 'date' deve ser inicializado com a data atual para garantir que não seja 'null'
   // na primeira renderização, resolvendo assim a dependência de tipagem.
-  const today = new Date().toISOString().split('T')[0];
+  
+  // 🐛 CORREÇÃO DE DATA: Ajusta a hora para o fuso horário local (evita o problema do dia seguinte)
+  const dateObj = new Date();
+  const localDate = new Date(dateObj.getTime() - (dateObj.getTimezoneOffset() * 60000));
+  const today = localDate.toISOString().split('T')[0];
+  
   const [apodData, setApodData] = useState<ApodData | null>(null);
   const [loading, setLoading] = useState(true);
   // Inicializamos com a data de hoje, garantindo que 'date' é sempre uma string no início.
@@ -158,7 +163,7 @@ export const Apod = () => {
     );
   };
 
- const renderTracks = () => (
+  const renderTracks = () => (
     <TrackList>
       {musicTracks.map((track) => (
         // CORREÇÃO AQUI: O TrackItem, que já é um styled(motion.li),
